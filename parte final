@@ -1,0 +1,126 @@
+CREATE TABLE empresas (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE paises (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    codigo_pais CHAR(2),
+    continente VARCHAR(50),
+    idioma_principal VARCHAR(50),
+    clima VARCHAR(50)
+);
+
+CREATE TABLE modelos_ia (
+    id SERIAL PRIMARY KEY,
+    nome_ia VARCHAR(100) NOT NULL,
+    versao VARCHAR(50),
+    tipo_modelo VARCHAR(50),
+    empresa_id INT REFERENCES empresas(id)
+);
+
+CREATE TABLE data_centers (
+    id SERIAL PRIMARY KEY,
+    pais_id INT REFERENCES paises(id),
+    modelo_ia_id INT REFERENCES modelos_ia(id),
+    cidade VARCHAR(100),
+    regiao VARCHAR(100),
+    tipo_data_center VARCHAR(50),
+    tipo_resfriamento VARCHAR(100),
+    fonte_energia VARCHAR(100),
+    ano_instalacao INT,
+    status VARCHAR(20),
+    num_servidores INT,
+    usuarios_milhoes NUMERIC,
+    interacoes_dia_mi NUMERIC,
+    consumo_agua_mi_l NUMERIC,
+    custo_anual_mi_usd NUMERIC,
+    latencia_media_ms NUMERIC,
+    temp_media_c NUMERIC,
+    pico_uso VARCHAR(20),
+    uso_principal VARCHAR(100),
+    crescimento_anual_pct NUMERIC,
+    regulamentacao_ambiental VARCHAR(50),
+    reuso_agua VARCHAR(10),
+    proximidade_agua VARCHAR(20),
+    observacao TEXT
+);
+
+INSERT INTO empresas (nome) VALUES
+('OpenAI'),
+('Google'),
+('Mistral AI'),
+('ByteDance / Baidu'),
+('LY Corporation'),
+('DeepSeek / Yandex'),
+('Anthropic'),
+('Aleph Alpha');
+
+INSERT INTO paises (nome, codigo_pais, continente, idioma_principal, clima) VALUES
+('Brasil', 'BR', 'América do Sul', 'Português', 'Tropical'),
+('EUA', 'US', 'América do Norte', 'Inglês', 'Temperado'),
+('Argentina', 'AR', 'América do Sul', 'Espanhol', 'Temperado'),
+('Espanha', 'ES', 'Europa', 'Espanhol', 'Mediterrâneo'),
+('França', 'FR', 'Europa', 'Francês', 'Temperado'),
+('China', 'CN', 'Ásia', 'Mandarim', 'Continental'),
+('Índia', 'IN', 'Ásia', 'Hindi/Inglês', 'Tropical'),
+('Japão', 'JP', 'Ásia', 'Japonês', 'Temperado úmido'),
+('Rússia', 'RU', 'Europa/Ásia', 'Russo', 'Continental'),
+('Austrália', 'AU', 'Oceania', 'Inglês', 'Temperado'),
+('África do Sul', 'ZA', 'África', 'Inglês/Zulu', 'Semiárido'),
+('Canadá', 'CA', 'América do Norte', 'Inglês/Francês', 'Continental frio'),
+('Uruguai', 'UY', 'América do Sul', 'Espanhol', 'Temperado'),
+('Suíça', 'CH', 'Europa', 'Alemão/Francês', 'Alpino'),
+('Alemanha', 'DE', 'Europa', 'Alemão', 'Temperado');
+
+INSERT INTO modelos_ia (nome_ia, versao, tipo_modelo, empresa_id) VALUES
+('ChatGPT', 'GPT-4', 'LLM', 1),
+('ChatGPT', 'GPT-4o', 'LLM', 1),
+('ChatGPT', 'GPT-3.5', 'LLM', 1),
+('Gemini', 'Gemini 1.5', 'Multimodal', 2),
+('Mistral', 'Mistral Large', 'LLM', 3),
+('Doubao/Ernie Bot', 'ERNIE 4.5', 'Multimodal', 4),
+('LINE AI', 'GPT-4o', 'Multimodal', 5),
+('DeepSeek/Alice', 'DeepSeek-V3', 'LLM', 6),
+('Claude', 'Claude 3.5', 'LLM', 7),
+('Aleph Alpha', 'Aleph Alpha L', 'Multimodal', 8);
+
+INSERT INTO data_centers (
+    pais_id, modelo_ia_id, cidade, regiao, tipo_data_center,
+    tipo_resfriamento, fonte_energia, ano_instalacao, status,
+    num_servidores, usuarios_milhoes, interacoes_dia_mi,
+    consumo_agua_mi_l, custo_anual_mi_usd, latencia_media_ms,
+    temp_media_c, pico_uso, uso_principal, crescimento_anual_pct,
+    regulamentacao_ambiental, reuso_agua, proximidade_agua, observacao
+) VALUES
+(1, 1, 'São Paulo', 'Sudeste', 'Urbano', 'Híbrido', 'Hidrelétrica', 2020, 'Ativo', 4500, 35.0, 12.0, 850.0, 110.0, 120.0, 22.0, 'Noite', 'Geral/Educacional', 0.15, 'Média (LGPD)', 'Sim', 'Alta', 'Forte uso educacional e corporativo'),
+(2, 2, 'Califórnia', 'Oeste', 'Hiperescala', 'Evaporativo', 'Solar/Eólica (parcial)', 2018, 'Ativo', 22000, 180.0, 45.0, 2400.0, 480.0, 75.0, 18.0, 'Tarde', 'Geral/Corporativo', 0.18, 'Baixa (estadual)', 'Não', 'Média', 'Alta demanda empresarial e desenvolvimento'),
+(3, 1, 'Buenos Aires', 'Pampa', 'Regional', 'Ar forçado', 'Gás natural + renov.', 2021, 'Ativo', 1800, 18.0, 4.2, 320.0, 45.0, 145.0, 17.0, 'Noite', 'Educacional', 0.22, 'Média', 'Parcial', 'Média', 'Crescimento em startups e educação'),
+(4, 4, 'Madrid', 'Mediterrâneo', 'Urbano', 'Híbrido', 'Eólica/Solar', 2019, 'Ativo', 3200, 28.0, 6.8, 510.0, 75.0, 95.0, 19.0, 'Tarde', 'Geral/Turismo', 0.16, 'Alta (UE)', 'Sim', 'Baixa', 'Forte adoção em turismo e serviços'),
+(5, 5, 'Paris', 'Atlântico', 'Hiperescala', 'Líquido', 'Nuclear (70%)', 2022, 'Ativo', 5500, 24.0, 5.5, 480.0, 85.0, 88.0, 14.0, 'Tarde', 'Pesquisa/Corporativo', 0.25, 'Alta (UE + soberania)', 'Sim', 'Alta', 'Foco em soberania digital e IA europeia'),
+(6, 6, 'Pequim', 'Leste', 'Hiperescala', 'Subaquático/Líquido', 'Carvão + Solar', 2019, 'Ativo', 35000, 230.0, 52.0, 3100.0, 620.0, 65.0, 13.0, 'Noite', 'Geral/Comércio', 0.35, 'Alta (estatal)', 'Sim', 'Alta', 'Ecossistema fechado; DeepSeek também relevante'),
+(7, 1, 'Bangalore', 'Sul', 'Hiperescala', 'Evaporativo', 'Solar + Carvão', 2020, 'Ativo', 12000, 95.0, 28.0, 1650.0, 210.0, 110.0, 26.0, 'Tarde', 'Educacional/Startups', 0.42, 'Média (em desenv.)', 'Parcial', 'Baixa', 'Maior crescimento global em adoção de IA'),
+(8, 7, 'Tóquio', 'Kanto', 'Hiperescala', 'Líquido avançado', 'Nuclear + Renováveis', 2019, 'Ativo', 8500, 42.0, 11.0, 720.0, 145.0, 72.0, 16.0, 'Tarde', 'Corporativo/Robótica', 0.14, 'Alta', 'Sim', 'Alta', 'Integração com robótica e IoT industrial'),
+(9, 8, 'Moscou', 'Central', 'Regional', 'Ar forçado + livre', 'Gás natural', 2021, 'Ativo', 4200, 38.0, 9.2, 890.0, 95.0, 135.0, 8.0, 'Noite', 'Geral/Governamental', 0.28, 'Alta (soberania)', 'Parcial', 'Média', 'Alternativas locais por restrições geopolíticas'),
+(10, 1, 'Sydney', 'Sudeste', 'Urbano', 'Ar livre + evap.', 'Solar + Carvão', 2020, 'Ativo', 3800, 22.0, 5.1, 410.0, 68.0, 105.0, 20.0, 'Tarde', 'Geral/Mineração', 0.19, 'Média-Alta', 'Sim', 'Baixa (costeira)', 'Foco em mineração, agricultura e pesquisa'),
+(11, 3, 'Joanesburgo', 'Gauteng', 'Regional', 'Ar forçado', 'Carvão + Solar emerg.', 2022, 'Ativo', 1500, 14.0, 3.4, 285.0, 38.0, 165.0, 19.0, 'Tarde', 'Educacional/Financ.', 0.31, 'Média (em desenv.)', 'Não', 'Baixa', 'Crescimento acelerado em fintechs e educação'),
+(12, 9, 'Toronto', 'Ontário', 'Hiperescala', 'Free-cooling', 'Hidrelétrica + Nuclear', 2019, 'Ativo', 6200, 31.0, 7.8, 520.0, 92.0, 82.0, 9.0, 'Tarde', 'Pesquisa/Corporativo', 0.17, 'Alta (federal)', 'Sim', 'Alta (lagos)', 'Anthropic tem raízes canadenses; foco em IA responsável'),
+(13, 1, 'Montevidéu', 'Sul', 'Pequeno', 'Ar natural + híbrido','Eólica + Hidro', 2022, 'Ativo', 420, 2.1, 0.52, 48.0, 8.5, 138.0, 17.0, 'Noite', 'Governamental/Educ.', 0.26, 'Alta (verde)', 'Sim', 'Alta (Rio Prata)', 'Líder regional em energia renovável e digitalização'),
+(14, 5, 'Zurique', 'Central', 'Financeiro', 'Líquido + free-cool.','Hidrelétrica + Nuclear', 2021, 'Ativo', 2100, 6.8, 1.9, 125.0, 42.0, 78.0, 10.0, 'Tarde', 'Financeiro/Pesquisa', 0.13, 'Muito Alta', 'Sim', 'Alta (lagos)', 'Foco em privacidade, finanças e pesquisa de ponta'),
+(15, 10, 'Frankfurt', 'Central', 'Hiperescala', 'Híbrido + líquido', 'Eólica + Solar + Gás', 2019, 'Ativo', 7800, 36.0, 8.9, 640.0, 115.0, 85.0, 11.0, 'Tarde', 'Industrial/Eng.', 0.15, 'Muito Alta (UE)', 'Sim', 'Média (rios)', 'Forte ecossistema de IA industrial e soberania digital');
+
+SELECT 
+    p.nome AS pais,
+    m.nome_ia AS ia,
+    m.versao,
+    e.nome AS empresa,
+    d.cidade,
+    d.uso_principal,
+    d.usuarios_milhoes,
+    d.status
+FROM data_centers d
+JOIN paises p ON d.pais_id = p.id
+JOIN modelos_ia m ON d.modelo_ia_id = m.id
+JOIN empresas e ON m.empresa_id = e.id
+ORDER BY p.nome;
